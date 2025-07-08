@@ -6,7 +6,7 @@ import TakeQuiz from "./pages/TakeQuiz";
 import Performance from "./pages/Performance";
 import ManageQuestions from "./pages/Admin/ManageQuestions";
 import UserReports from "./pages/Admin/UserReports";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 function App() {
   return (
