@@ -1,0 +1,84 @@
+/* UserReports.module.css */
+.container {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.chartContainer {
+  width: 600px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.thead {
+  background-color: #3498db;
+  color: white;
+}
+
+.th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 500;
+}
+
+.tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.tbody tr:hover {
+  background-color: #e8f4fc;
+}
+
+.td {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+}
+
+.userEmail {
+  font-weight: 500;
+  color: #2980b9;
+}
+
+.scoreCell {
+  font-weight: bold;
+  color: #27ae60;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chartContainer {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .th,
+  .td {
+    padding: 12px 8px;
+  }
+}

@@ -6,6 +6,7 @@ import TakeQuiz from "./pages/TakeQuiz";
 import Performance from "./pages/Performance";
 import ManageQuestions from "./pages/Admin/ManageQuestions";
 import UserReports from "./pages/Admin/UserReports";
+import Users from "./pages/Admin/UserManage";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import Skill from "./pages/Admin/Skill";
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/admin/questions" element={<ManageQuestions />} />
           <Route path="/admin/skills" element={<Skill />} />
           <Route path="/admin/reports" element={<UserReports />} />
+          <Route path="/admin/users" element={<Users />} />
         </Route>
       </Routes>
     </Router>

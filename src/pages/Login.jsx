@@ -19,10 +19,9 @@ const Login = () => {
     try {
       const res = await api.post("/auth/login", { email, password });
       login(res.data.token, res.data.user.role, res.data.user);
-      navigate(
-        res.data.user.role === "admin" ? "/admin/questions" : "/dashboard"
-      );
+      navigate(res.data.user.role === "admin" ? "/admin/questions" : "/quiz");
     } catch (err) {
+      console.log(err);
       showWarning(
         "Login Failed",
         err.response?.data.message || "Invalid credentials"

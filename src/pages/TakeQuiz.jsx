@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import styles from "../styles/TakeQuiz.module.css";
+import UserTab from "../components/UserTab";
+import { showConfirmDialog, showAlert } from "../services/alert";
 
 const TakeQuiz = () => {
   const [skills, setSkills] = useState([]);
@@ -12,7 +14,7 @@ const TakeQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [attemptId, setAttemptId] = useState(0);
-  const navigate = useNavigate();
+
   useEffect(() => {
     api
       .get("/skills")
@@ -28,7 +30,6 @@ const TakeQuiz = () => {
       console.log(res.data.data);
       setQuestions(res.data.data);
       setAttemptId(res.data.attemptId);
-      setAnswers({});
       setSubmitted(false);
     } catch {
       alert("Failed to load questions");
@@ -53,13 +54,21 @@ const TakeQuiz = () => {
       (r) => r.selected === r.correct
     ).length;
 
+    attempt.score = correctCount;
+    attempt.attempt_id = attemptId;
+
+    console.log(attempt);
+
     setScore(correctCount);
     setSubmitted(true);
 
-    return;
-
     try {
-      await api.post("/attempts", attempt);
+      await api.post("/attempts/submit", attempt);
+      await showAlert("success", "Quiz", `Your score ${correctCount}`);
+      setQuestions([]);
+      setAttemptId(0);
+      setAnswers({});
+      setSubmitted(false);
     } catch {
       alert("Failed to save attempt");
     }
@@ -70,10 +79,7 @@ const TakeQuiz = () => {
       <Navbar></Navbar>
 
       <div className={styles.quizContainer}>
-        <button onClick={() => navigate("/dashboard")}>Dashnoard</button>
-        <button onClick={() => navigate("/performance")}>
-          View Performance
-        </button>
+        <UserTab></UserTab>
 
         <h2 className={styles.quizHeader}>Take Quiz</h2>
 

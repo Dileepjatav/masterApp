@@ -13,6 +13,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import Navbar from "../../components/Navbar";
+import styles from "../../styles/UserReport.module.css";
+import Navtab from "../../components/AdminTab";
+import DataTable from "../../components/DataTable";
 
 ChartJS.register(
   CategoryScale,
@@ -25,17 +29,17 @@ ChartJS.register(
 
 const UserReports = () => {
   const [reports, setReports] = useState([]);
+  const fetchReports = async () => {
+    try {
+      const res = await api.get("/reports/user-performance");
+      setReports(res.data);
+      console.log(res.data);
+    } catch (err) {
+      alert("Failed to fetch reports");
+    }
+  };
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const res = await api.get("/reports/user-performance");
-        setReports(res.data);
-      } catch (err) {
-        alert("Failed to fetch reports");
-      }
-    };
-
     fetchReports();
   }, []);
 
@@ -44,43 +48,60 @@ const UserReports = () => {
     datasets: [
       {
         label: "Avg Score",
-        data: reports.map((r) => r.avgScore),
+        data: reports.map((r) => r.avg_score),
         backgroundColor: "rgba(75, 192, 192, 0.6)",
+      },
+      {
+        label: "total attempt",
+        data: reports.map((r) => r.total_attempts),
+        backgroundColor: "rgba(134, 214, 104, 0.6)",
+      },
+      {
+        label: "total score",
+        data: reports.map((r) => r.total_score),
+        backgroundColor: "rgba(234, 95, 21, 0.6)",
       },
     ],
   };
 
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "user_id",
+    },
+    {
+      header: "Name",
+      accessorKey: "user_name",
+    },
+    {
+      header: "Email",
+      accessorKey: "email",
+    },
+    {
+      header: "Avrage Score",
+      accessorKey: "avg_score",
+    },
+    {
+      header: "Total Score",
+      accessorKey: "total_score",
+    },
+    {
+      header: "Total attempt",
+      accessorKey: "total_attempts",
+    },
+  ];
+
   return (
-    <div>
-      <h2>User Reports</h2>
-
-      <div style={{ width: "600px", margin: "20px auto" }}>
-        <Bar data={chartData} />
+    <>
+      <Navbar></Navbar>
+      <div className={styles.container}>
+        <Navtab></Navtab>
+        <div className={styles.chartContainer}>
+          <Bar data={chartData} />
+        </div>
+        <DataTable data={reports} columns={columns}></DataTable>
       </div>
-
-      <table
-        border="1"
-        cellPadding="10"
-        style={{ width: "100%", textAlign: "left" }}
-      >
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Total Quizzes</th>
-            <th>Average Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reports.map((r, i) => (
-            <tr key={i}>
-              <td>{r.email}</td>
-              <td>{r.totalQuizzes}</td>
-              <td>{r.avgScore}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    </>
   );
 };
 

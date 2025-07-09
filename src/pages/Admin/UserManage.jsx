@@ -9,13 +9,14 @@ const ManageQuestions = () => {
   const [form, setForm] = useState({
     id: "",
     name: "",
-    description: "",
+    email: "",
+    password: "",
   });
   const [skills, setSkills] = useState([]);
 
   const fetchSkills = async () => {
     try {
-      const response = await api.get("/skills");
+      const response = await api.get("/users");
       setSkills(response.data);
     } catch (err) {
       console.error("Failed to load skills:", err);
@@ -40,12 +41,12 @@ const ManageQuestions = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/skills", form);
-      showAlert("success", "Question", "Save successfully");
+      await api.post("/auth/signup", form);
+      showAlert("success", "User", "Save successfully");
       setForm({
         id: "",
         name: "",
-        description: "",
+        email: "",
       });
       fetchSkills();
     } catch (err) {
@@ -56,13 +57,13 @@ const ManageQuestions = () => {
   const handleDelete = async (id) => {
     const res = await showConfirmDialog(
       "alert",
-      "Are you sure you want to delete this Skill Category?"
+      "Are you sure you want to delete this User ?"
     );
 
     if (!res.isConfirmed) return;
 
     try {
-      await api.delete(`/skills/${id}`);
+      await api.delete(`/users/${id}`);
       fetchSkills();
     } catch (err) {
       console.error("Failed to delete question:", err);
@@ -74,7 +75,7 @@ const ManageQuestions = () => {
       <Navbar></Navbar>
       <div className={styles.container}>
         <Navtab></Navtab>
-        <h2 className={styles.header}>Manage Skills</h2>
+        <h2 className={styles.header}>Manage Users</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             className={styles.input}
@@ -86,15 +87,23 @@ const ManageQuestions = () => {
           />
           <input
             className={`${styles.input} `}
-            name="description"
-            placeholder="description"
-            value={form.description}
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className={`${styles.input} `}
+            name="password"
+            placeholder="Password"
+            value={form.password}
             onChange={handleChange}
             required
           />
 
           <button type="submit" className={styles.submitButton}>
-            Add skill Category
+            Add User
           </button>
         </form>
 
@@ -102,8 +111,8 @@ const ManageQuestions = () => {
           <thead>
             <tr>
               <th className={styles.th}>Id</th>
-              <th className={styles.th}>Skill Category</th>
-              <th className={styles.th}>Description</th>
+              <th className={styles.th}>User Name</th>
+              <th className={styles.th}>Email</th>
               <th className={styles.th}>Action</th>
             </tr>
           </thead>
@@ -112,7 +121,7 @@ const ManageQuestions = () => {
               <tr key={q.id}>
                 <td className={styles.td}>{q.id}</td>
                 <td className={styles.td}>{q.name}</td>
-                <td className={styles.td}>{q.description}</td>
+                <td className={styles.td}>{q.email}</td>
                 <td className={styles.td}>
                   <button
                     onClick={() => handleDelete(q.id)}

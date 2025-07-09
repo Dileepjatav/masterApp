@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import styles from "../styles/Performance.module.css";
 import Navbar from "../components/Navbar";
-import { showConfirmDialog, showAlert } from "../services/alert";
-import { useNavigate } from "react-router-dom";
+import { showConfirmDialog } from "../services/alert";
+import UserTab from "../components/UserTab";
+import DataTable from "../components/DataTable";
 
 const Performance = () => {
   const [history, setHistory] = useState([]);
-  const navigate = useNavigate();
+
   const fetchPerformance = async () => {
     try {
       const res = await api.get("/attempts");
@@ -38,61 +39,78 @@ const Performance = () => {
     }
   };
 
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "id",
+    },
+    {
+      header: "Name",
+      accessorKey: "name",
+    },
+    {
+      header: "Score",
+      accessorKey: "total_score",
+    },
+    {
+      header: "Start on",
+      cell: ({ row }) => (
+        <>
+          {new Intl.DateTimeFormat("en-IN", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(new Date(row.original.started_at))}
+        </>
+      ),
+      accessorKey: "started_at",
+    },
+    {
+      header: "Completed on",
+      cell: ({ row }) => (
+        <>
+          {new Intl.DateTimeFormat("en-IN", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(new Date(row.original.completed_at))}
+        </>
+      ),
+      accessorKey: "completed_at",
+    },
+    {
+      header: "Status",
+      cell: ({ row }) => (
+        <>{row.original.completed_at == null ? "Not subimited" : "Completed"}</>
+      ),
+      accessorKey: "completed_at",
+    },
+    {
+      header: "Actions",
+      cell: ({ row }) => (
+        <button
+          onClick={() => handleDelete(row.original.id)}
+          style={{
+            backgroundColor: "#dc3545",
+            color: "white",
+            padding: "6px 12px",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Delete
+        </button>
+      ),
+    },
+  ];
+
   return (
     <>
       <Navbar></Navbar>
 
       <div className={styles.container}>
-        <button onClick={() => navigate("/dashboard")}>Dashboard</button>
-        <button onClick={() => navigate("/quiz")}>Take Quiz</button>
-
+        <UserTab></UserTab>
         <h2 className={styles.header}>Performance History</h2>
-        <table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th className={styles.th}>Id</th>
-              <th className={styles.th}>Skill</th>
-              <th className={styles.th}>Score</th>
-              <th className={styles.th}>Start Date</th>
-              <th className={styles.th}>Submited Date</th>
-              <th className={styles.th}>Status</th>
-              <th className={styles.th}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((attempt, i) => (
-              <tr key={i}>
-                <td className={styles.td}>{attempt.id}</td>
-                <td className={styles.td}>{attempt.name}</td>
-                <td className={`${styles.td} ${styles.scoreCell}`}>
-                  {attempt.total_score}
-                </td>
-                <td className={`${styles.td} ${styles.dateCell}`}>
-                  {new Intl.DateTimeFormat("en-IN", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  }).format(new Date(attempt.started_at))}
-                </td>
-                <td className={styles.td}>
-                  {attempt.completed_at == null
-                    ? "Not subimited"
-                    : new Date(attempt.started_at).toLocaleString()}
-                </td>
-                <td className={styles.td}>
-                  {attempt.completed_at == null ? "Pending" : "Complete"}
-                </td>
-                <td className={styles.td}>
-                  <button
-                    onClick={() => handleDelete(attempt.id)}
-                    className={styles.deleteButton}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DataTable data={history} columns={columns}></DataTable>
       </div>
     </>
   );

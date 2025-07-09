@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import styles from "../../styles/Manage.module.css";
 import { showConfirmDialog, showAlert } from "../../services/alert";
 import { useNavigate } from "react-router-dom";
+import Navtab from "../../components/AdminTab";
 
 const ManageQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -98,7 +99,8 @@ const ManageQuestions = () => {
     <>
       <Navbar></Navbar>
       <div className={styles.container}>
-        <button onClick={() => navigate("/admin/skills")}>Manage Skills</button>
+        <Navtab></Navtab>
+
         <h2 className={styles.header}>Manage Questions</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <select

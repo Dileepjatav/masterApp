@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Register.module.css";
 import api from "../services/api";
 import { showAlert } from "../services/alert";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -12,30 +13,64 @@ const Register = () => {
   const [role, setRole] = useState("user");
   const navigate = useNavigate();
 
+  const { login } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) {
       showAlert("warning", "Password Mismatch", "Passwords do not match");
       return;
     }
+
     try {
-      let res = await api.post("/auth/signup", { email, password, role, name });
+      const res = await api.post("/auth/signup", {
+        email,
+        password,
+        role,
+        name,
+      });
+
       if (res.status === 201) {
-        showAlert(
-          "success",
-          "Registration Successful",
-          "You have registered successfully"
-        );
-        navigate("/");
-      } else {
+        showAlert("success", "Registration Successful", "You can now login");
+        login(res.data.token, res.data.user.role, res.data.user);
+        navigate(res.data.user.role === "admin" ? "/admin/questions" : "/quiz");
+        // navigate(role === "admin" ? "/admin/questions" : "/quiz");
+      }
+    } catch (error) {
+      // Handle different error scenarios
+      if (error.response) {
+        // Server responded with a status code outside 2xx range
+        const { status, data } = error.response;
+
+        if (status === 400) {
+          // Zod validation error or other bad request
+          const errorMessage =
+            data.error?.message ||
+            data.message ||
+            data.errors?.join(", ") ||
+            "Validation failed";
+          showAlert("error", "Registration Failed", errorMessage);
+        } else if (status === 409) {
+          showAlert("error", "Registration Failed", "Email already exists");
+        } else {
+          showAlert(
+            "error",
+            "Registration Failed",
+            "An unexpected error occurred"
+          );
+        }
+      } else if (error.request) {
+        // Request was made but no response received
         showAlert(
           "error",
-          "Registration Failed",
-          res.data?.error?.message || "An error occurred"
+          "Network Error",
+          "Please check your internet connection"
         );
+      } else {
+        // Something happened in setting up the request
+        showAlert("error", "Error", "Failed to send request");
       }
-    } catch (err) {
-      showAlert("warning", "Registration Failed", err.response?.data.message);
+
+      console.error("Registration error:", error);
     }
   };
 
