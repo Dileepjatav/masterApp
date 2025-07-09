@@ -7,6 +7,7 @@ import Performance from "./pages/Performance";
 import ManageQuestions from "./pages/Admin/ManageQuestions";
 import UserReports from "./pages/Admin/UserReports";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import Skill from "./pages/Admin/Skill";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
 
         <Route element={<ProtectedRoute roles="user" />}>
           <Route path="/admin/questions" element={<ManageQuestions />} />
+          <Route path="/admin/skills" element={<Skill />} />
           <Route path="/admin/reports" element={<UserReports />} />
         </Route>
       </Routes>

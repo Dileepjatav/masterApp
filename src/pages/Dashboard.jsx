@@ -1,21 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
-  const { logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
 
   return (
     <div>
+      <Navbar></Navbar>
       <h2>User Dashboard</h2>
       <button onClick={() => navigate("/quiz")}>Take Quiz</button>
       <button onClick={() => navigate("/performance")}>View Performance</button>
-      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };

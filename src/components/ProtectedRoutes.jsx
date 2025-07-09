@@ -13,7 +13,7 @@ const ProtectedRoute = ({ roles }) => {
   if (!user) {
     return <Navigate to="/" replace />;
   }
-  console.log("ProtectedRoute user:", !roles.includes(user.role));
+
   // Check if route is restricted by role
   if (roles.includes(user.role)) {
     return <Navigate to="/unauthorized" replace />;
