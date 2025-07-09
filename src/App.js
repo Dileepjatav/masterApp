@@ -14,14 +14,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<p>Page Not Found</p>} />
 
-        <Route element={<ProtectedRoute role="user" />}>
+        <Route element={<ProtectedRoute roles="admin" />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/quiz" element={<TakeQuiz />} />
           <Route path="/performance" element={<Performance />} />
         </Route>
 
-        <Route element={<ProtectedRoute role="admin" />}>
+        <Route element={<ProtectedRoute roles="user" />}>
           <Route path="/admin/questions" element={<ManageQuestions />} />
           <Route path="/admin/reports" element={<UserReports />} />
         </Route>

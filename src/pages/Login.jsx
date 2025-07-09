@@ -1,45 +1,63 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import styles from "../styles/Login.module.css";
 import api from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await api.post("/auth/login", { email, password });
-      login(res.data.token, res.data.role);
-      navigate(res.data.role === "admin" ? "/admin/questions" : "/dashboard");
+      login(res.data.token, res.data.user.role, res.data.user);
+      navigate(
+        res.data.user.role === "admin" ? "/admin/questions" : "/dashboard"
+      );
     } catch (err) {
-      alert("Login failed");
+      console.error("Login error:", err);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className={styles.container}>
+      <div className={styles.loginContainer}>
+        <h2 className={styles.loginTitle}>Login</h2>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <button type="submit" className={styles.submitButton}>
+            Login
+          </button>
+        </form>
+        <p className={styles.registerText}>
+          Don't have an account?{" "}
+          <Link to="/register" className={styles.registerLink}>
+            Register here
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
