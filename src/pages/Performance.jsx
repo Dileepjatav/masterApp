@@ -5,25 +5,25 @@ import Navbar from "../components/Navbar";
 import { showConfirmDialog } from "../services/alert";
 import UserTab from "../components/UserTab";
 import DataTable from "../components/DataTable";
-import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+// import { Bar } from "react-chartjs-2";
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from "chart.js";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
 
 const Performance = () => {
   const [history, setHistory] = useState([]);
@@ -41,43 +41,43 @@ const Performance = () => {
     fetchPerformance();
   }, []);
 
-  const chartData = {
-    labels: history.map((r) => r.email),
-    datasets: [
-      {
-        label: "Avg Score",
-        data: history.map((r) => r.total_score),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-      },
-      {
-        label: "total attempt",
-        data: history.map((r) => r.total_attempts),
-        backgroundColor: "rgba(134, 214, 104, 0.6)",
-      },
-      {
-        label: "total score",
-        data: history.map((r) => r.total_score),
-        backgroundColor: "rgba(234, 95, 21, 0.6)",
-      },
-    ],
-  };
+  // const chartData = {
+  //   labels: history.map((r) => r.email),
+  //   datasets: [
+  //     {
+  //       label: "Avg Score",
+  //       data: history.map((r) => r.total_score),
+  //       backgroundColor: "rgba(75, 192, 192, 0.6)",
+  //     },
+  //     {
+  //       label: "total attempt",
+  //       data: history.map((r) => r.total_attempts),
+  //       backgroundColor: "rgba(134, 214, 104, 0.6)",
+  //     },
+  //     {
+  //       label: "total score",
+  //       data: history.map((r) => r.total_score),
+  //       backgroundColor: "rgba(234, 95, 21, 0.6)",
+  //     },
+  //   ],
+  // };
 
-  const handleDelete = async (id) => {
-    const res = await showConfirmDialog(
-      "alert",
-      "Are you sure you want to delete this Attempt?"
-    );
+  // const handleDelete = async (id) => {
+  //   const res = await showConfirmDialog(
+  //     "alert",
+  //     "Are you sure you want to delete this Attempt?"
+  //   );
 
-    if (!res.isConfirmed) return;
+  //   if (!res.isConfirmed) return;
 
-    try {
-      await api.delete(`/attempts/${id}`);
-      fetchPerformance();
-    } catch (err) {
-      console.error("Failed to delete question:", err);
-      alert("Failed to delete question");
-    }
-  };
+  //   try {
+  //     await api.delete(`/attempts/${id}`);
+  //     fetchPerformance();
+  //   } catch (err) {
+  //     console.error("Failed to delete question:", err);
+  //     alert("Failed to delete question");
+  //   }
+  // };
 
   const columns = [
     {

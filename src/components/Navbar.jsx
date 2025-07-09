@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { role, logout, user, name, email } = useAuth();
+  const { role, logout, name, email } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {

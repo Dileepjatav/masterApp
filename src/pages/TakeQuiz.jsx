@@ -4,7 +4,7 @@ import api from "../services/api";
 import Navbar from "../components/Navbar";
 import styles from "../styles/TakeQuiz.module.css";
 import UserTab from "../components/UserTab";
-import { showConfirmDialog, showAlert } from "../services/alert";
+import { showAlert } from "../services/alert";
 
 const TakeQuiz = () => {
   const [skills, setSkills] = useState([]);
