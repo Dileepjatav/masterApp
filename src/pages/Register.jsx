@@ -2,22 +2,40 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Register.module.css";
 import api from "../services/api";
+import { showAlert } from "../services/alert";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState("user");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== passwordConfirm) {
+      showAlert("warning", "Password Mismatch", "Passwords do not match");
+      return;
+    }
     try {
-      await api.post("/auth/signup", { email, password, role });
-      alert("Registered successfully");
-      navigate("/");
+      let res = await api.post("/auth/signup", { email, password, role, name });
+      if (res.status === 201) {
+        showAlert(
+          "success",
+          "Registration Successful",
+          "You have registered successfully"
+        );
+        navigate("/");
+      } else {
+        showAlert(
+          "error",
+          "Registration Failed",
+          res.data?.error?.message || "An error occurred"
+        );
+      }
     } catch (err) {
-      alert("Registration failed");
+      showAlert("warning", "Registration Failed", err.response?.data.message);
     }
   };
 
@@ -47,6 +65,14 @@ const Register = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.inputField}
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
             required
             className={styles.inputField}
           />

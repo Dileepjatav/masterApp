@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import styles from "../styles/Login.module.css";
+import { showWarning } from "../services/alert";
 import api from "../services/api";
 
 const Login = () => {
@@ -22,7 +23,10 @@ const Login = () => {
         res.data.user.role === "admin" ? "/admin/questions" : "/dashboard"
       );
     } catch (err) {
-      console.error("Login error:", err);
+      showWarning(
+        "Login Failed",
+        err.response?.data.message || "Invalid credentials"
+      );
     }
   };
 
