@@ -54,3 +54,9 @@ button:disabled {
   gap: 8px;
   font-size: 14px;
 }
+ul {
+  padding: 0;
+}
+li {
+  list-style-type: none;
+}

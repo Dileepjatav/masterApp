@@ -18,7 +18,13 @@ const Login = () => {
 
     try {
       const res = await api.post("/auth/login", { email, password });
-      login(res.data.token, res.data.user.role, res.data.user);
+      await login(
+        res.data.token,
+        res.data.user.role,
+        res.data.user,
+        res.data.user.name,
+        res.data.user.email
+      );
       navigate(res.data.user.role === "admin" ? "/admin/questions" : "/quiz");
     } catch (err) {
       console.log(err);

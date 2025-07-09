@@ -5,7 +5,10 @@ const UserTab = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [tab, setTab] = useState(["performance", "quiz"]);
+  const [tab, setTab] = useState([
+    { name: "Take quiz", path: "quiz" },
+    { name: "Past performance", path: "performance" },
+  ]);
   const [activeTab, SetActive] = useState("");
 
   const pathSegments = location.pathname.split("/").filter(Boolean);
@@ -16,7 +19,14 @@ const UserTab = () => {
   }, [lastPath]);
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        gap: "10px",
+        marginBottom: "10px",
+      }}
+    >
       {tab &&
         tab.map((bt, i) => (
           <button
@@ -27,20 +37,21 @@ const UserTab = () => {
               borderRadius: "5px",
               cursor: "pointer",
               fontSize: "16px",
-              fontWeight: activeTab == bt ? "600" : "400",
-              backgroundColor: activeTab == bt ? "#3b82f6" : "#e5e7eb",
-              color: activeTab == bt ? "white" : "#4b5563",
-              boxShadow: activeTab == bt ? "0 2px 5px rgba(0,0,0,0.2)" : "none",
-              transform: activeTab == bt ? "translateY(-1px)" : "none",
+              fontWeight: activeTab == bt.path ? "600" : "400",
+              backgroundColor: activeTab == bt.path ? "#3b82f6" : "#e5e7eb",
+              color: activeTab == bt.path ? "white" : "#4b5563",
+              boxShadow:
+                activeTab == bt.path ? "0 2px 5px rgba(0,0,0,0.2)" : "none",
+              transform: activeTab == bt.path ? "translateY(-1px)" : "none",
               transition: "all 0.2s ease-in-out",
               ":hover": {
-                backgroundColor: activeTab == bt ? "#2563eb" : "#d1d5db",
+                backgroundColor: activeTab == bt.path ? "#2563eb" : "#d1d5db",
               },
             }}
             key={i}
-            onClick={() => navigate(`/${bt}`)}
+            onClick={() => navigate(`/${bt.path}`)}
           >
-            {bt.toLocaleUpperCase()}
+            {bt.name.toLocaleUpperCase()}
           </button>
         ))}
     </div>

@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { role, logout, user } = useAuth();
+  const { role, logout, user, name, email } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,12 +24,14 @@ const Navbar = () => {
         padding: "0 20px",
       }}
     >
-      <div style={{ fontSize: "20px", fontWeight: "bold" }}>Quezz</div>
+      <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+        Master Quiz App
+      </div>
 
       {role && (
         <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
           <span>
-            Role: {role.toUpperCase()} Name: {user.name}
+            Role: {role.toUpperCase()} Name: {name} Email: {email}
           </span>
           <button
             onClick={handleLogout}

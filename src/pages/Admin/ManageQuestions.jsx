@@ -3,8 +3,8 @@ import api from "../../services/api";
 import Navbar from "../../components/Navbar";
 import styles from "../../styles/Manage.module.css";
 import { showConfirmDialog, showAlert } from "../../services/alert";
-import { useNavigate } from "react-router-dom";
 import Navtab from "../../components/AdminTab";
+import DataTable from "../../components/DataTable";
 
 const ManageQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -20,7 +20,8 @@ const ManageQuestions = () => {
   const [skills, setSkills] = useState([]);
 
   const [option, setOption] = useState(["A", "B", "C", "D"]);
-  const navigate = useNavigate();
+  const [editMode, setEditMode] = useState(false);
+  const [selectedId, setSelectedID] = useState("");
 
   const fetchSkills = async () => {
     try {
@@ -37,6 +38,7 @@ const ManageQuestions = () => {
       const response = await api.get("/questions");
       console.log(response.data.data);
       setQuestions(response.data.data);
+      setEditMode(false);
     } catch (err) {
       console.error("Failed to load questions:", err);
       alert("Failed to load questions");
@@ -61,8 +63,14 @@ const ManageQuestions = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/questions", form);
-      showAlert("success", "Question", "Save successfully");
+      editMode
+        ? await api.put(`/questions/${selectedId}`, form)
+        : await api.post("/questions", form);
+
+      editMode
+        ? showAlert("success", "Question", "Update successfully")
+        : showAlert("success", "Question", "Save successfully");
+
       setForm({
         skill_id: "",
         question_text: "",
@@ -95,13 +103,82 @@ const ManageQuestions = () => {
     }
   };
 
+  const handlEdit = async (row) => {
+    setForm(row.original);
+    setEditMode(true);
+    setSelectedID(row.original.id);
+  };
+
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "id",
+    },
+    {
+      header: "Skill Category",
+      accessorKey: "skill_name",
+    },
+    {
+      header: "Question",
+      accessorKey: "question_text",
+    },
+
+    {
+      header: "Options",
+      cell: ({ row }) => (
+        <ul>
+          <li>A {row.original.option_a}</li>
+          <li>B {row.original.option_b}</li>
+          <li>C {row.original.option_c}</li>
+          <li>D {row.original.option_d}</li>
+        </ul>
+      ),
+    },
+    {
+      header: "Answer",
+      accessorKey: "correct_option",
+    },
+    {
+      header: "Actions",
+      cell: ({ row }) => (
+        <>
+          <button
+            onClick={() => handleDelete(row.original.id)}
+            style={{
+              backgroundColor: "#dc3545",
+              color: "white",
+              padding: "6px 12px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => handlEdit(row)}
+            style={{
+              backgroundColor: "#dcdchg",
+              color: "white",
+              padding: "6px 12px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Edit
+          </button>
+        </>
+      ),
+    },
+  ];
+
   return (
     <>
       <Navbar></Navbar>
       <div className={styles.container}>
         <Navtab></Navtab>
 
-        <h2 className={styles.header}>Manage Questions</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <select
             name="skill_id"
@@ -185,48 +262,11 @@ const ManageQuestions = () => {
             ))}
           </select>
           <button type="submit" className={styles.submitButton}>
-            Add Question
+            {editMode ? "Update Question" : "Add Question"}
           </button>
         </form>
 
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.th}>Id</th>
-              <th className={styles.th}>Category</th>
-              <th className={styles.th}>Question</th>
-              <th className={styles.th}>Options</th>
-              <th className={styles.th}>Answer</th>
-              <th className={styles.th}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {questions.map((q) => (
-              <tr key={q.id}>
-                <td className={styles.td}>{q.id}</td>
-                <td className={styles.td}>{q.skill_name}</td>
-                <td className={styles.td}>{q.question_text}</td>
-                <td className={styles.td}>
-                  <ul className={styles.ul}>
-                    <li className={styles.li}>{q.option_a}</li>
-                    <li className={styles.li}>{q.option_b}</li>
-                    <li className={styles.li}>{q.option_c}</li>
-                    <li className={styles.li}>{q.option_d}</li>
-                  </ul>
-                </td>
-                <td className={styles.td}>{q.correct_option}</td>
-                <td className={styles.td}>
-                  <button
-                    onClick={() => handleDelete(q.id)}
-                    className={styles.deleteButton}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DataTable data={questions} columns={columns}></DataTable>
       </div>
     </>
   );

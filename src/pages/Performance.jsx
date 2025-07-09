@@ -5,6 +5,25 @@ import Navbar from "../components/Navbar";
 import { showConfirmDialog } from "../services/alert";
 import UserTab from "../components/UserTab";
 import DataTable from "../components/DataTable";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Performance = () => {
   const [history, setHistory] = useState([]);
@@ -21,6 +40,27 @@ const Performance = () => {
   useEffect(() => {
     fetchPerformance();
   }, []);
+
+  const chartData = {
+    labels: history.map((r) => r.email),
+    datasets: [
+      {
+        label: "Avg Score",
+        data: history.map((r) => r.total_score),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+      },
+      {
+        label: "total attempt",
+        data: history.map((r) => r.total_attempts),
+        backgroundColor: "rgba(134, 214, 104, 0.6)",
+      },
+      {
+        label: "total score",
+        data: history.map((r) => r.total_score),
+        backgroundColor: "rgba(234, 95, 21, 0.6)",
+      },
+    ],
+  };
 
   const handleDelete = async (id) => {
     const res = await showConfirmDialog(
@@ -68,10 +108,14 @@ const Performance = () => {
       header: "Completed on",
       cell: ({ row }) => (
         <>
-          {new Intl.DateTimeFormat("en-IN", {
-            dateStyle: "medium",
-            timeStyle: "short",
-          }).format(new Date(row.original.completed_at))}
+          <>
+            {row.original.completed_at == null
+              ? "Not subimited"
+              : new Intl.DateTimeFormat("en-IN", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                }).format(new Date(row.original.completed_at))}
+          </>
         </>
       ),
       accessorKey: "completed_at",
@@ -79,28 +123,28 @@ const Performance = () => {
     {
       header: "Status",
       cell: ({ row }) => (
-        <>{row.original.completed_at == null ? "Not subimited" : "Completed"}</>
+        <>{row.original.completed_at == null ? "Pending" : "Completed"}</>
       ),
       accessorKey: "completed_at",
     },
-    {
-      header: "Actions",
-      cell: ({ row }) => (
-        <button
-          onClick={() => handleDelete(row.original.id)}
-          style={{
-            backgroundColor: "#dc3545",
-            color: "white",
-            padding: "6px 12px",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Delete
-        </button>
-      ),
-    },
+    // {
+    //   header: "Actions",
+    //   cell: ({ row }) => (
+    //     <button
+    //       onClick={() => handleDelete(row.original.id)}
+    //       style={{
+    //         backgroundColor: "#dc3545",
+    //         color: "white",
+    //         padding: "6px 12px",
+    //         border: "none",
+    //         borderRadius: "4px",
+    //         cursor: "pointer",
+    //       }}
+    //     >
+    //       Delete
+    //     </button>
+    //   ),
+    // },
   ];
 
   return (
@@ -109,7 +153,10 @@ const Performance = () => {
 
       <div className={styles.container}>
         <UserTab></UserTab>
-        <h2 className={styles.header}>Performance History</h2>
+
+        {/* <div className={styles.chartContainer}>
+          <Bar data={chartData} />
+        </div> */}
         <DataTable data={history} columns={columns}></DataTable>
       </div>
     </>

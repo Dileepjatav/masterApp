@@ -31,7 +31,13 @@ const Register = () => {
 
       if (res.status === 201) {
         showAlert("success", "Registration Successful", "You can now login");
-        login(res.data.token, res.data.user.role, res.data.user);
+        await login(
+          res.data.token,
+          res.data.user.role,
+          res.data.user,
+          res.data.user.name,
+          res.data.user.email
+        );
         navigate(res.data.user.role === "admin" ? "/admin/questions" : "/quiz");
         // navigate(role === "admin" ? "/admin/questions" : "/quiz");
       }

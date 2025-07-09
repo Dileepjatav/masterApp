@@ -28,9 +28,15 @@ const TakeQuiz = () => {
         skill_id: selectedSkill,
       });
       console.log(res.data.data);
-      setQuestions(res.data.data);
-      setAttemptId(res.data.attemptId);
-      setSubmitted(false);
+      if (res.data.data.length > 0) {
+        setQuestions(res.data.data);
+        setAttemptId(res.data.attemptId);
+        setSubmitted(false);
+      } else {
+        await showAlert("info", "Quiz", "No record in Question");
+        setQuestions([]);
+        setAttemptId(0);
+      }
     } catch {
       alert("Failed to load questions");
     }

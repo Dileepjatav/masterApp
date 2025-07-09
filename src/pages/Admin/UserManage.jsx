@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import styles from "../../styles/Manage.module.css";
 import { showConfirmDialog, showAlert } from "../../services/alert";
 import Navtab from "../../components/AdminTab";
+import DataTable from "../../components/DataTable";
 
 const ManageQuestions = () => {
   const [form, setForm] = useState({
@@ -70,13 +71,46 @@ const ManageQuestions = () => {
     }
   };
 
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "id",
+    },
+    {
+      header: "Name",
+      accessorKey: "name",
+    },
+    {
+      header: "Email",
+      accessorKey: "email",
+    },
+    {
+      header: "Actions",
+      cell: ({ row }) => (
+        <button
+          onClick={() => handleDelete(row.original.id)}
+          style={{
+            backgroundColor: "#dc3545",
+            color: "white",
+            padding: "6px 12px",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Delete
+        </button>
+      ),
+    },
+  ];
+
   return (
     <>
       <Navbar></Navbar>
       <div className={styles.container}>
         <Navtab></Navtab>
-        <h2 className={styles.header}>Manage Users</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <h2>Manage Users</h2>
+        {/* <form onSubmit={handleSubmit} className={styles.form}>
           <input
             className={styles.input}
             name="name"
@@ -105,35 +139,9 @@ const ManageQuestions = () => {
           <button type="submit" className={styles.submitButton}>
             Add User
           </button>
-        </form>
+        </form> */}
 
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.th}>Id</th>
-              <th className={styles.th}>User Name</th>
-              <th className={styles.th}>Email</th>
-              <th className={styles.th}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {skills.map((q) => (
-              <tr key={q.id}>
-                <td className={styles.td}>{q.id}</td>
-                <td className={styles.td}>{q.name}</td>
-                <td className={styles.td}>{q.email}</td>
-                <td className={styles.td}>
-                  <button
-                    onClick={() => handleDelete(q.id)}
-                    className={styles.deleteButton}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DataTable data={skills} columns={columns}></DataTable>
       </div>
     </>
   );
