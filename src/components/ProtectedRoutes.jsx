@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ roles }) => {
-  const { user, isLoading, role } = useContext(AuthContext);
+  const { user, isLoading } = useContext(AuthContext);
 
   if (isLoading) {
     return <div>Loading...</div>; // Or a loading spinner

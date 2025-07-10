@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "../styles/Register.module.css";
 import api from "../services/api";
@@ -10,19 +10,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [name, setName] = useState("");
-  const [roleF, setRole] = useState("user");
+  const [role, setRole] = useState("user");
   const navigate = useNavigate();
 
-  const { login, token, role } = useAuth();
-
-  useEffect(() => {
-    if (role === "admin" && role !== null) {
-      navigate("/admin/questions");
-    } else if (role === "user") {
-      navigate("/quiz");
-    }
-  }, [token]);
-
+  const { login } = useAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== passwordConfirm) {
@@ -34,7 +25,7 @@ const Register = () => {
       const res = await api.post("/auth/signup", {
         email,
         password,
-        role: roleF,
+        role,
         name,
       });
 
@@ -127,7 +118,7 @@ const Register = () => {
             className={styles.inputField}
           />
           <select
-            value={roleF}
+            value={role}
             onChange={(e) => setRole(e.target.value)}
             className={styles.selectField}
           >
