@@ -5,7 +5,7 @@ masterApp is a web-based quiz platform that enables users to register, take skil
 - **Responsive Design**: Works on mobile, tablet, and desktop.
 - **Modern Stack**: Built with React, .
 
-- ![Project Screenshot](/projectScreenShot/*)
+- ![Project Screenshot](/projectScreenShot)
 
 ## 🛠 Technologies Used
 
