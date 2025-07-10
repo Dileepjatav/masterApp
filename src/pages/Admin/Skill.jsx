@@ -80,7 +80,7 @@ const ManageQuestions = () => {
       accessorKey: "name",
     },
     {
-      header: "Question",
+      header: "Description",
       accessorKey: "description",
     },
 
