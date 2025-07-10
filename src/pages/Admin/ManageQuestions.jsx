@@ -176,9 +176,8 @@ const ManageQuestions = () => {
   return (
     <>
       <Navbar></Navbar>
+      <Navtab></Navtab>
       <div className={styles.container}>
-        <Navtab></Navtab>
-
         <form onSubmit={handleSubmit} className={styles.form}>
           <select
             name="skill_id"
@@ -265,7 +264,8 @@ const ManageQuestions = () => {
             {editMode ? "Update Question" : "Add Question"}
           </button>
         </form>
-
+      </div>
+      <div className={styles.container}>
         <DataTable data={questions} columns={columns}></DataTable>
       </div>
     </>

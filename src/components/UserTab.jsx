@@ -33,6 +33,7 @@ const UserTab = () => {
             style={{
               padding: "10px 20px",
               margin: "5px",
+              marginTop: "20px",
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",

@@ -3,6 +3,7 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
+  overflow: auto;
 }
 
 .header {
@@ -13,8 +14,10 @@
 }
 
 .form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
+  display: flex;
+  flex-direction: column;
   gap: 15px;
   margin-bottom: 30px;
   background: #f8f9fa;
@@ -22,6 +25,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding-top: 30px;
+  overflow: auto;
 }
 
 .input,

@@ -107,9 +107,8 @@ const ManageQuestions = () => {
   return (
     <>
       <Navbar></Navbar>
+      <Navtab></Navtab>
       <div className={styles.container}>
-        <Navtab></Navtab>
-
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             className={styles.input}

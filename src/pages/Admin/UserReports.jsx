@@ -220,20 +220,26 @@ const UserReports = () => {
   return (
     <>
       <Navbar></Navbar>
+      <Navtab></Navtab>
       <div className={styles.container}>
-        <Navtab></Navtab>
         <h2>User Performance Report</h2>
         <div className={styles.chartContainer}>
           <Bar data={chartData} />
         </div>
+      </div>
+      <div className={styles.container}>
         <DataTable data={reports} columns={columns}></DataTable>
-
+      </div>
+      <div className={styles.container}>
         <h2>Skill Gap Report</h2>
         <div className={styles.chartContainer}>
           <Bar data={skillchartData} />
         </div>
+      </div>
+      <div className={styles.container}>
         <DataTable data={skillgap} columns={skillolumns}></DataTable>
-
+      </div>
+      <div className={styles.container}>
         <h2>Time Based Report</h2>
         <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
           <div>
@@ -256,10 +262,12 @@ const UserReports = () => {
             />
           </div>
         </div>
-
         <div className={styles.chartContainer}>
+          {" "}
           <Bar data={TimechartData} />
         </div>
+      </div>
+      <div className={styles.container}>
         <DataTable data={timeBased} columns={timecolumns}></DataTable>
       </div>
     </>

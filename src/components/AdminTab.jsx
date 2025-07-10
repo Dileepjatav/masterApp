@@ -27,6 +27,8 @@ const AdminTab = () => {
         justifyContent: "center",
         gap: "10px",
         marginBottom: "10px",
+        marginTop: "20px",
+        flexWrap: "wrap",
       }}
     >
       {tab &&
@@ -35,6 +37,7 @@ const AdminTab = () => {
             style={{
               padding: "10px 20px",
               margin: "5px",
+              display: "flex",
               border: "none",
               borderRadius: "5px",
               cursor: "pointer",

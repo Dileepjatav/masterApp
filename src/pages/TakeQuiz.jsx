@@ -83,10 +83,8 @@ const TakeQuiz = () => {
   return (
     <>
       <Navbar></Navbar>
-
+      <UserTab></UserTab>
       <div className={styles.quizContainer}>
-        <UserTab></UserTab>
-
         <h2 className={styles.quizHeader}>Take Quiz</h2>
 
         <div className={styles.quizControls}>

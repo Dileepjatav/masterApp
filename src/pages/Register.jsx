@@ -30,7 +30,7 @@ const Register = () => {
       });
 
       if (res.status === 201) {
-        showAlert("success", "Registration Successful", "You can now login");
+        // showAlert("success", "Registration Successful", "You can now login");
         await login(
           res.data.token,
           res.data.user.role,
