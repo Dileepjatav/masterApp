@@ -31,7 +31,7 @@ const Navbar = () => {
       {role && (
         <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
           <span>
-            Role: {role.toUpperCase()} Name: {name} Email: {email}
+            Role: {role} Email: {email}
           </span>
           <button
             onClick={handleLogout}

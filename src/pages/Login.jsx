@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -10,8 +10,16 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useAuth();
+  const { login, role, token } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (role === "admin" && role !== null) {
+      navigate("/admin/questions");
+    } else if (role === "user") {
+      navigate("/quiz");
+    }
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
