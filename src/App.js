@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import TakeQuiz from "./pages/TakeQuiz";
 import Performance from "./pages/Performance";
 import ManageQuestions from "./pages/Admin/ManageQuestions";
@@ -19,7 +19,7 @@ function App() {
         <Route path="*" element={<Login />} />
 
         <Route element={<ProtectedRoute roles="admin" />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route path="/quiz" element={<TakeQuiz />} />
           <Route path="/performance" element={<Performance />} />
         </Route>

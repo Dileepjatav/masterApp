@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 // import { showConfirmDialog } from "../services/alert";
 import UserTab from "../components/UserTab";
 import DataTable from "../components/DataTable";
-
+import { showWarning } from "../services/alert";
 const Performance = () => {
   const [history, setHistory] = useState([]);
 
@@ -14,7 +14,7 @@ const Performance = () => {
       const res = await api.get("/attempts");
       setHistory(res.data.data);
     } catch (err) {
-      alert("Failed to load performance history");
+      showWarning(err, err.response?.data.message || "Invalid credentials");
     }
   };
 
